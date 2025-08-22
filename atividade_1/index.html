@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu - Faça a Sua Escolha</title>
+    <style>
+      /* GLOBAL */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #f5f5f5;
+        padding: 20px;
+      }
+
+      h2,
+      h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      /* Cards */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fafafa;
+        transition: 0.3s;
+        text-align: center;
+      }
+
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .card h4 {
+        margin: 10px 0;
+        color: #444;
+      }
+
+      .card p {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .card input {
+        margin: 10px;
+      }
+
+      /* Formulário */
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      form button {
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button {
+        padding: 12px;
+        background: #007bff;
+        border: none;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      .resumo {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .total {
+        font-weight: bold;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      .controls button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .controls input {
+        width: 40px;
+        text-align: center;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0;
+        gap: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Menu - Faça a Sua Escolha</h2>
+      <h3>Prato Principal</h3>
+      <p style="text-align: center">
+        Todos os pratos acompanham arroz, salada e sobremesa do dia.
+      </p>
+      <div class="grid">
+        <label class="card">
+          <img src="https://picsum.photos/200/150?1" alt="Lombo com Batata" />
+          <h4>Lombo com Batata</h4>
+          <p>R$ 18,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+            <input
+              type="number"
+              name="prato"
+              class="pratoPrin"
+              value="18"
+              data-nome="Lombo com Batata"
+            />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+        <label class="card">
+          <img src="https://picsum.photos/200/150?2" alt="Frango Grelhado" />
+          <h4>Frango Grelhado</h4>
+          <p>R$ 20,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+
+            <input
+              type="number"
+              name="prato"
+              value="20"
+              class="pratoPrin"
+              data-nome="Frango Grelhado"
+            />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+        <label class="card">
+          <img src="https://picsum.photos/200/150?3" alt="Carne de Panela" />
+          <h4>Carne de Panela</h4>
+          <p>R$ 22,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+
+            <input
+              type="number"
+              name="prato"
+              value="22"
+              class="pratoPrin"
+              data-nome="Carne de Panela"
+            />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="container">
+      <h3>Acompanhamentos</h3>
+      <p style="text-align: center">Preço por porção</p>
+      <div class="grid">
+        <label class="card">
+          <img src="https://picsum.photos/200/150?4" alt="Farofa" />
+          <h4>Farofa</h4>
+          <p>R$ 5,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+
+            <input type="number" value="5" data-nome="Farofa" />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+        <label class="card">
+          <img src="https://picsum.photos/200/150?5" alt="Salada" />
+          <h4>Salada</h4>
+          <p>R$ 6,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+
+            <input type="number" value="6" data-nome="Salada" />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+        <label class="card">
+          <img src="https://picsum.photos/200/150?6" alt="Torresmo" />
+          <h4>Torresmo</h4>
+          <p>R$ 8,00</p>
+          <div class="controls">
+            <button onclick="alterarQtd(this,-1,18)">-</button>
+
+            <input type="number" value="8" data-nome="Torresmo" />
+            <button onclick="alterarQtd(this,1,18)">+</button>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="container">
+      <h3>Dados Pessoais</h3>
+      <form id="pedidoForm">
+        <input type="text" id="nome" placeholder="Seu nome" required />
+        <input
+          type="tel"
+          id="telefone"
+          placeholder="(xx) xxxxx-xxxx"
+          required
+        />
+        <input type="email" id="email" placeholder="Seu e-mail" required />
+        <button type="submit">Calcular</button>
+      </form>
+      <div class="resumo" id="resumoPedido"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("pedidoForm");
+      const resumoDiv = document.getElementById("resumoPedido");
+
+      let soma = 0;
+      document.querySelectorAll(".card").forEach((card) => {
+        const preco = parseFloat(card.querySelector(".price"));
+        const qtd = parseInt(card.querySelector("input").value);
+        soma += preco * qtd;
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let nome = document.getElementById("nome").value;
+        let telefone = document.getElementById("telefone").value;
+        let email = document.getElementById("email").value;
+
+        let pratoSelecionado = document.getElementsByName("nome");
+        let acompanhamentos = document.querySelectorAll(
+          "input[type='checkbox']:checked"
+        );
+
+        if (!pratoSelecionado) {
+          alert("Escolha um prato principal!");
+          return;
+        }
+
+        let total = Number(pratoSelecionado.value);
+        let resumo = `<p><b>Cliente:</b> ${nome} <br> <b>Telefone:</b> ${telefone} <br> <b>Email:</b> ${email}</p>`;
+        resumo += `<p><b>Prato Principal:</b> ${pratoSelecionado.dataset.nome} - R$ ${pratoSelecionado.value},00</p>`;
+
+        if (acompanhamentos.length > 0) {
+          resumo += "<p><b>Acompanhamentos:</b><br>";
+          acompanhamentos.forEach((item) => {
+            resumo += `- ${item.dataset.nome} (R$ ${item.value},00)<br>`;
+            total += Number(item.value);
+          });
+          resumo += "</p>";
+        }
+
+        resumo += `<p class="total">Preço Final: R$ ${soma},00</p>`;
+
+        resumoDiv.innerHTML = resumo;
+      });
+
+      let total = 0;
+
+      function alterarQtd(btn, valor, preco) {
+        const input = btn.parentNode.querySelector("input");
+        let qtd = parseInt(input.value);
+
+        qtd += valor;
+        if (qtd < 0) qtd = 0;
+
+        input.value = qtd;
+
+        // recalcula o total
+        calcularTotal();
+      }
+    </script>
+  </body>
+</html>
