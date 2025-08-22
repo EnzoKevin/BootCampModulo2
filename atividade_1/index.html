@@ -170,8 +170,9 @@
               type="number"
               name="prato"
               class="pratoPrin"
-              value="18"
+              value="0"
               data-nome="Lombo com Batata"
+              readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
@@ -186,9 +187,10 @@
             <input
               type="number"
               name="prato"
-              value="20"
+              value="0"
               class="pratoPrin"
               data-nome="Frango Grelhado"
+              readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
@@ -203,9 +205,10 @@
             <input
               type="number"
               name="prato"
-              value="22"
+              value="0"
               class="pratoPrin"
               data-nome="Carne de Panela"
+              readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
@@ -224,7 +227,7 @@
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input type="number" value="5" data-nome="Farofa" />
+            <input readonly type="number" value="0" data-nome="Farofa" />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
@@ -235,7 +238,7 @@
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input type="number" value="6" data-nome="Salada" />
+            <input type="number" readonly value="0" data-nome="Salada" />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
@@ -246,7 +249,7 @@
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input type="number" value="8" data-nome="Torresmo" />
+            <input type="number" value="0" readonly data-nome="Torresmo" />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
@@ -273,7 +276,17 @@
       const form = document.getElementById("pedidoForm");
       const resumoDiv = document.getElementById("resumoPedido");
 
-      let soma = 0;
+      function alterarQtd(btn, valor, preco) {
+        const input = btn.parentNode.querySelector("input");
+        let qtd = parseInt(input.value);
+
+        qtd += valor;
+        if (qtd < 0) qtd = 0;
+
+        input.value = qtd;
+      }
+
+      var soma = 0;
       document.querySelectorAll(".card").forEach((card) => {
         const preco = parseFloat(card.querySelector(".price"));
         const qtd = parseInt(card.querySelector("input").value);
@@ -286,29 +299,39 @@
         let nome = document.getElementById("nome").value;
         let telefone = document.getElementById("telefone").value;
         let email = document.getElementById("email").value;
+        var selected = false;
 
-        let pratoSelecionado = document.getElementsByName("nome");
-        let acompanhamentos = document.querySelectorAll(
+        let pratoSelecionado = document.getElementsByClassName("PratoPrin");
+
+        /*    let acompanhamentos = document.querySelectorAll(
           "input[type='checkbox']:checked"
-        );
+        ); */
 
-        if (!pratoSelecionado) {
+        for (let i = 0; i < pratoSelecionado.length; i++) {
+          if (pratoSelecionado[i].value != 0) {
+            selected = true;
+            var pratoSelected = pratoSelecionado[i].value;
+          }
+        }
+        console.log(pratoSelecionado[1].ariaValueNow);
+
+        if (selected) {
           alert("Escolha um prato principal!");
           return;
         }
 
         let total = Number(pratoSelecionado.value);
         let resumo = `<p><b>Cliente:</b> ${nome} <br> <b>Telefone:</b> ${telefone} <br> <b>Email:</b> ${email}</p>`;
-        resumo += `<p><b>Prato Principal:</b> ${pratoSelecionado.dataset.nome} - R$ ${pratoSelecionado.value},00</p>`;
+        resumo += `<p><b>Prato Principal:</b> ${pratoSelected} - R$ ${pratoSelecionado.value},00</p>`;
 
-        if (acompanhamentos.length > 0) {
+        /*  if (acompanhamentos.length > 0) {
           resumo += "<p><b>Acompanhamentos:</b><br>";
           acompanhamentos.forEach((item) => {
             resumo += `- ${item.dataset.nome} (R$ ${item.value},00)<br>`;
             total += Number(item.value);
           });
           resumo += "</p>";
-        }
+        } */
 
         resumo += `<p class="total">Preço Final: R$ ${soma},00</p>`;
 
@@ -316,19 +339,6 @@
       });
 
       let total = 0;
-
-      function alterarQtd(btn, valor, preco) {
-        const input = btn.parentNode.querySelector("input");
-        let qtd = parseInt(input.value);
-
-        qtd += valor;
-        if (qtd < 0) qtd = 0;
-
-        input.value = qtd;
-
-        // recalcula o total
-        calcularTotal();
-      }
     </script>
   </body>
 </html>
