@@ -17,7 +17,7 @@
         <label class="card">
           <img src="https://picsum.photos/200/150?1" alt="Lombo com Batata" />
           <h4>Lombo com Batata</h4>
-          <p>R$ 18,00</p>
+          <p class="price">R$ 18,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
             <input
@@ -25,7 +25,7 @@
               name="prato"
               class="pratoPrin"
               value="0"
-              data-nome="Lombo com Batata"
+              data-preco="18"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
@@ -34,7 +34,7 @@
         <label class="card">
           <img src="https://picsum.photos/200/150?2" alt="Frango Grelhado" />
           <h4>Frango Grelhado</h4>
-          <p>R$ 20,00</p>
+          <p class="price">R$ 20,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
@@ -43,7 +43,7 @@
               name="prato"
               value="0"
               class="pratoPrin"
-              data-nome="Frango Grelhado"
+              data-preco="20"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
@@ -52,7 +52,7 @@
         <label class="card">
           <img src="https://picsum.photos/200/150?3" alt="Carne de Panela" />
           <h4>Carne de Panela</h4>
-          <p>R$ 22,00</p>
+          <p class="price">R$ 22,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
@@ -61,7 +61,7 @@
               name="prato"
               value="0"
               class="pratoPrin"
-              data-nome="Carne de Panela"
+              data-preco="22"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
@@ -77,33 +77,51 @@
         <label class="card">
           <img src="https://picsum.photos/200/150?4" alt="Farofa" />
           <h4>Farofa</h4>
-          <p>R$ 5,00</p>
+          <p class="price">R$ 5,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input readonly type="number" value="0" data-nome="Farofa" />
+            <input
+              readonly
+              type="number"
+              class="acomp"
+              value="0"
+              data-preco="5"
+            />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
           <img src="https://picsum.photos/200/150?5" alt="Salada" />
           <h4>Salada</h4>
-          <p>R$ 6,00</p>
+          <p class="price">R$ 6,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input type="number" readonly value="0" data-nome="Salada" />
+            <input
+              type="number"
+              readonly
+              value="0"
+              data-preco="6"
+              class="acomp"
+            />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
           <img src="https://picsum.photos/200/150?6" alt="Torresmo" />
           <h4>Torresmo</h4>
-          <p>R$ 8,00</p>
+          <p class="price">R$ 8,00</p>
           <div class="controls">
             <button onclick="alterarQtd(this,-1,18)">-</button>
 
-            <input type="number" value="0" readonly data-nome="Torresmo" />
+            <input
+              type="number"
+              value="0"
+              readonly
+              data-preco="8"
+              class="acomp"
+            />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
@@ -140,36 +158,43 @@
         input.value = qtd;
       }
 
-      var soma = 0;
-      document.querySelectorAll(".card").forEach((card) => {
-        const preco = parseFloat(card.querySelector(".price"));
-        const qtd = parseInt(card.querySelector("input").value);
-        soma += preco * qtd;
-      });
-
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
         let nome = document.getElementById("nome").value;
         let telefone = document.getElementById("telefone").value;
         let email = document.getElementById("email").value;
+        let pratoSelecionado = document.getElementsByClassName("pratoPrin");
+        let acomp = document.getElementsByClassName("acomp");
+        var pratoSelected = 0;
+        var test = 0;
         var selected = false;
-
-        let pratoSelecionado = document.getElementsByClassName("PratoPrin");
 
         /*    let acompanhamentos = document.querySelectorAll(
           "input[type='checkbox']:checked"
         ); */
 
         for (let i = 0; i < pratoSelecionado.length; i++) {
-          if (pratoSelecionado[i].value != 0) {
+          let quantidade = Number(pratoSelecionado[i].value);
+          let preco = Number(pratoSelecionado[i].getAttribute("data-preco"));
+
+          if (!isNaN(quantidade) && quantidade > 0) {
+            test += quantidade * preco;
             selected = true;
-            var pratoSelected = pratoSelecionado[i].value;
+          }
+          if (test == 0) selected = false;
+        }
+
+        for (let i = 0; i < acomp.length; i++) {
+          let acompanhamento = Number(acomp[i].value);
+          let precoAcompanhamento = Number(acomp[i].getAttribute("data-preco"));
+
+          if (!isNaN(acompanhamento) && acompanhamento > 0) {
+            test += acompanhamento * precoAcompanhamento;
           }
         }
-        console.log(pratoSelecionado[1].ariaValueNow);
 
-        if (selected) {
+        if (!selected) {
           alert("Escolha um prato principal!");
           return;
         }
@@ -191,8 +216,6 @@
 
         resumoDiv.innerHTML = resumo;
       });
-
-      let total = 0;
     </script>
   </body>
 </html>
