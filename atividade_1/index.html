@@ -15,7 +15,7 @@
       </p>
       <div class="grid">
         <label class="card">
-          <img src="https://picsum.photos/200/150?1" alt="Lombo com Batata" />
+          <img src="" alt="Lombo com Batata" />
           <h4>Lombo com Batata</h4>
           <p class="price">R$ 18,00</p>
           <div class="controls">
@@ -26,13 +26,15 @@
               class="pratoPrin"
               value="0"
               data-preco="18"
+              data-nome="Lombo com Batata"
+              data-id="0"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
-          <img src="https://picsum.photos/200/150?2" alt="Frango Grelhado" />
+          <img src="" alt="Frango Grelhado" />
           <h4>Frango Grelhado</h4>
           <p class="price">R$ 20,00</p>
           <div class="controls">
@@ -50,7 +52,7 @@
           </div>
         </label>
         <label class="card">
-          <img src="https://picsum.photos/200/150?3" alt="Carne de Panela" />
+          <img src="" alt="Carne de Panela" />
           <h4>Carne de Panela</h4>
           <p class="price">R$ 22,00</p>
           <div class="controls">
@@ -75,7 +77,7 @@
       <p style="text-align: center">Preço por porção</p>
       <div class="grid">
         <label class="card">
-          <img src="https://picsum.photos/200/150?4" alt="Farofa" />
+          <img src="" alt="Farofa" />
           <h4>Farofa</h4>
           <p class="price">R$ 5,00</p>
           <div class="controls">
@@ -92,7 +94,7 @@
           </div>
         </label>
         <label class="card">
-          <img src="https://picsum.photos/200/150?5" alt="Salada" />
+          <img src="" alt="Salada" />
           <h4>Salada</h4>
           <p class="price">R$ 6,00</p>
           <div class="controls">
@@ -109,7 +111,7 @@
           </div>
         </label>
         <label class="card">
-          <img src="https://picsum.photos/200/150?6" alt="Torresmo" />
+          <img src="" alt="Torresmo" />
           <h4>Torresmo</h4>
           <p class="price">R$ 8,00</p>
           <div class="controls">
@@ -140,8 +142,8 @@
         />
         <input type="email" id="email" placeholder="Seu e-mail" required />
         <button type="submit">Calcular</button>
+        <div class="resumo" id="resumoPedido">ters</div>
       </form>
-      <div class="resumo" id="resumoPedido"></div>
     </div>
 
     <script>
@@ -167,22 +169,27 @@
         let pratoSelecionado = document.getElementsByClassName("pratoPrin");
         let acomp = document.getElementsByClassName("acomp");
         var pratoSelected = 0;
-        var test = 0;
+        var quantidade = 0;
+        var soma = 0;
         var selected = false;
-
+        var plates = [];
         /*    let acompanhamentos = document.querySelectorAll(
           "input[type='checkbox']:checked"
         ); */
 
         for (let i = 0; i < pratoSelecionado.length; i++) {
-          let quantidade = Number(pratoSelecionado[i].value);
+          quantidade = Number(pratoSelecionado[i].value);
           let preco = Number(pratoSelecionado[i].getAttribute("data-preco"));
+          let nome = Number(pratoSelecionado[i].getAttribute("data-nome"));
+          let id = Number(pratoSelecionado[i].getAttribute("data-id"));
+          let obj = { valor: preco, nome: nome, id: id };
+          plates.push(obj);
 
           if (!isNaN(quantidade) && quantidade > 0) {
-            test += quantidade * preco;
+            soma += quantidade * preco;
             selected = true;
           }
-          if (test == 0) selected = false;
+          if (soma == 0) selected = false;
         }
 
         for (let i = 0; i < acomp.length; i++) {
@@ -190,7 +197,7 @@
           let precoAcompanhamento = Number(acomp[i].getAttribute("data-preco"));
 
           if (!isNaN(acompanhamento) && acompanhamento > 0) {
-            test += acompanhamento * precoAcompanhamento;
+            soma += acompanhamento * precoAcompanhamento;
           }
         }
 
@@ -198,8 +205,8 @@
           alert("Escolha um prato principal!");
           return;
         }
-
-        let total = Number(pratoSelecionado.value);
+        console.log("cheguei");
+        let total = pratoSelecionado.value;
         let resumo = `<p><b>Cliente:</b> ${nome} <br> <b>Telefone:</b> ${telefone} <br> <b>Email:</b> ${email}</p>`;
         resumo += `<p><b>Prato Principal:</b> ${pratoSelected} - R$ ${pratoSelecionado.value},00</p>`;
 
@@ -215,6 +222,7 @@
         resumo += `<p class="total">Preço Final: R$ ${soma},00</p>`;
 
         resumoDiv.innerHTML = resumo;
+        console.log("partiu");
       });
     </script>
   </body>
