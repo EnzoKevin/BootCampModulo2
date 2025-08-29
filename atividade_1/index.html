@@ -15,7 +15,7 @@
       </p>
       <div class="grid">
         <label class="card">
-          <img src="" alt="Lombo com Batata" />
+          <img src="./img/bife.jpg" alt="Lombo com Batata" />
           <h4>Lombo com Batata</h4>
           <p class="price">R$ 18,00</p>
           <div class="controls">
@@ -34,7 +34,7 @@
           </div>
         </label>
         <label class="card">
-          <img src="" alt="Frango Grelhado" />
+          <img src="./img/coxa.jpg" alt="Frango Grelhado" />
           <h4>Frango Grelhado</h4>
           <p class="price">R$ 20,00</p>
           <div class="controls">
@@ -46,13 +46,15 @@
               value="0"
               class="pratoPrin"
               data-preco="20"
+              data-nome="Frango Gralhado"
+              data-id="1"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
-          <img src="" alt="Carne de Panela" />
+          <img src="./img/panela.jpg" alt="Carne de Panela" />
           <h4>Carne de Panela</h4>
           <p class="price">R$ 22,00</p>
           <div class="controls">
@@ -64,6 +66,8 @@
               value="0"
               class="pratoPrin"
               data-preco="22"
+              data-nome="Carne de Panela"
+              data-id="2"
               readonly
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
@@ -77,7 +81,7 @@
       <p style="text-align: center">Preço por porção</p>
       <div class="grid">
         <label class="card">
-          <img src="" alt="Farofa" />
+          <img src="./img/farofa.jpg" alt="Farofa" />
           <h4>Farofa</h4>
           <p class="price">R$ 5,00</p>
           <div class="controls">
@@ -89,12 +93,14 @@
               class="acomp"
               value="0"
               data-preco="5"
+              data-nome="Farofa"
+              data-id="0"
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
-          <img src="" alt="Salada" />
+          <img src="./img/salad.jpg" alt="Salada" />
           <h4>Salada</h4>
           <p class="price">R$ 6,00</p>
           <div class="controls">
@@ -105,13 +111,15 @@
               readonly
               value="0"
               data-preco="6"
+              data-nome="Salada"
+              data-id="1"
               class="acomp"
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
           </div>
         </label>
         <label class="card">
-          <img src="" alt="Torresmo" />
+          <img src="./img/torresmo.jpg" alt="Torresmo" />
           <h4>Torresmo</h4>
           <p class="price">R$ 8,00</p>
           <div class="controls">
@@ -122,6 +130,8 @@
               value="0"
               readonly
               data-preco="8"
+              data-nome="Torresmo"
+              data-id="2"
               class="acomp"
             />
             <button onclick="alterarQtd(this,1,18)">+</button>
@@ -142,7 +152,7 @@
         />
         <input type="email" id="email" placeholder="Seu e-mail" required />
         <button type="submit">Calcular</button>
-        <div class="resumo" id="resumoPedido">ters</div>
+        <div class="resumo" id="resumoPedido"></div>
       </form>
     </div>
 
@@ -173,17 +183,24 @@
         var soma = 0;
         var selected = false;
         var plates = [];
-        /*    let acompanhamentos = document.querySelectorAll(
-          "input[type='checkbox']:checked"
-        ); */
 
         for (let i = 0; i < pratoSelecionado.length; i++) {
           quantidade = Number(pratoSelecionado[i].value);
           let preco = Number(pratoSelecionado[i].getAttribute("data-preco"));
-          let nome = Number(pratoSelecionado[i].getAttribute("data-nome"));
+          let nome = pratoSelecionado[i].getAttribute("data-nome");
           let id = Number(pratoSelecionado[i].getAttribute("data-id"));
-          let obj = { valor: preco, nome: nome, id: id };
-          plates.push(obj);
+
+          if (quantidade != 0) {
+            let obj = {
+              valor: preco,
+              nome: nome,
+              id: id,
+              price: quantidade * preco,
+              quantidade: quantidade,
+            };
+            plates.push(obj);
+            console.log(plates);
+          }
 
           if (!isNaN(quantidade) && quantidade > 0) {
             soma += quantidade * preco;
@@ -195,6 +212,20 @@
         for (let i = 0; i < acomp.length; i++) {
           let acompanhamento = Number(acomp[i].value);
           let precoAcompanhamento = Number(acomp[i].getAttribute("data-preco"));
+          let nome = acomp[i].getAttribute("data-nome");
+          let id = acomp[i].getAttribute("data-id");
+
+          if (acompanhamento != 0) {
+            let obj = {
+              valor: precoAcompanhamento,
+              nome: nome,
+              id: id,
+              price: acompanhamento * precoAcompanhamento,
+              quantidade: acompanhamento,
+            };
+            plates.push(obj);
+            console.log(plates);
+          }
 
           if (!isNaN(acompanhamento) && acompanhamento > 0) {
             soma += acompanhamento * precoAcompanhamento;
@@ -207,19 +238,21 @@
         }
         console.log("cheguei");
         let total = pratoSelecionado.value;
-        let resumo = `<p><b>Cliente:</b> ${nome} <br> <b>Telefone:</b> ${telefone} <br> <b>Email:</b> ${email}</p>`;
-        resumo += `<p><b>Prato Principal:</b> ${pratoSelected} - R$ ${pratoSelecionado.value},00</p>`;
-
-        /*  if (acompanhamentos.length > 0) {
-          resumo += "<p><b>Acompanhamentos:</b><br>";
-          acompanhamentos.forEach((item) => {
-            resumo += `- ${item.dataset.nome} (R$ ${item.value},00)<br>`;
-            total += Number(item.value);
-          });
-          resumo += "</p>";
-        } */
-
-        resumo += `<p class="total">Preço Final: R$ ${soma},00</p>`;
+        let resumo = `
+          <h1>Caro ${nome}</h1>
+            <br/>
+          <p>Seguem os dados do seu pedido</p>
+            <br/>
+          <p>O seu pedido é</p>
+            <br/>
+        `;
+        for (let i = 0; i < plates.length; i++) {
+          resumo += `
+            <li>
+              Prato: ${plates[i].nome} - Preço unitario: R$${plates[i].valor} - Quantidade: ${plates[i].quantidade} - Total: ${plates[i].price}
+            </li>
+          `;
+        }
 
         resumoDiv.innerHTML = resumo;
         console.log("partiu");
