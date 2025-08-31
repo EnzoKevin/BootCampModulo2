@@ -19,7 +19,6 @@ form.addEventListener("submit", function (e) {
   let email = document.getElementById("email").value;
   let pratoSelecionado = document.getElementsByClassName("pratoPrin");
   let acomp = document.getElementsByClassName("acomp");
-  var pratoSelected = 0;
   var quantidade = 0;
   var soma = 0;
   var selected = false;
@@ -78,7 +77,6 @@ form.addEventListener("submit", function (e) {
     return;
   }
   console.log("cheguei");
-  let total = pratoSelecionado.value;
   let resumo = `
           <h1>Caro ${nome}</h1>
             <br/>
@@ -94,6 +92,12 @@ form.addEventListener("submit", function (e) {
             </li>
           `;
   }
+
+  resumo += `
+    <br/>
+    <h1 style="text-align: left; "> Preço Final - R$${soma}</h2>
+    <br/>
+  `;
 
   resumoDiv.innerHTML = resumo;
   console.log("partiu");
