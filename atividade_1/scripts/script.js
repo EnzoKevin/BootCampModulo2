@@ -1,46 +1,100 @@
 const form = document.getElementById("pedidoForm");
 const resumoDiv = document.getElementById("resumoPedido");
-let pratoSelecionado = document.getElementsByClassName("Principal");
+
+function alterarQtd(btn, valor, preco) {
+  const input = btn.parentNode.querySelector("input");
+  let qtd = parseInt(input.value);
+
+  qtd += valor;
+  if (qtd < 0) qtd = 0;
+
+  input.value = qtd;
+}
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
   let nome = document.getElementById("nome").value;
   let telefone = document.getElementById("telefone").value;
   let email = document.getElementById("email").value;
+  let pratoSelecionado = document.getElementsByClassName("pratoPrin");
+  let acomp = document.getElementsByClassName("acomp");
+  var pratoSelected = 0;
+  var quantidade = 0;
+  var soma = 0;
+  var selected = false;
+  var plates = [];
 
-  let acompanhamentos = document.querySelectorAll(
-    "input[type='checkbox']:checked"
-  );
-  let Prato1 = pratoSelecionado[0].value;
-  let Prato2 = pratoSelecionado[1].value;
-  let Prato3 = pratoSelecionado[2].value;
+  for (let i = 0; i < pratoSelecionado.length; i++) {
+    quantidade = Number(pratoSelecionado[i].value);
+    let preco = Number(pratoSelecionado[i].getAttribute("data-preco"));
+    let nome = pratoSelecionado[i].getAttribute("data-nome");
+    let id = Number(pratoSelecionado[i].getAttribute("data-id"));
 
-  let total = Number(pratoSelecionado.value);
-
-  for (i = 0; i < pratoSelecionado.length; i++) {
-    if (pratoSelecionado[i] >= 1) {
-      var prato = true;
+    if (quantidade != 0) {
+      let obj = {
+        valor: preco,
+        nome: nome,
+        id: id,
+        price: quantidade * preco,
+        quantidade: quantidade,
+      };
+      plates.push(obj);
+      console.log(plates);
     }
 
-    if (i === 2 && prato) {
-      alert("Escolha um prato principal!");
-      return;
+    if (!isNaN(quantidade) && quantidade > 0) {
+      soma += quantidade * preco;
+      selected = true;
+    }
+    if (soma == 0) selected = false;
+  }
+
+  for (let i = 0; i < acomp.length; i++) {
+    let acompanhamento = Number(acomp[i].value);
+    let precoAcompanhamento = Number(acomp[i].getAttribute("data-preco"));
+    let nome = acomp[i].getAttribute("data-nome");
+    let id = acomp[i].getAttribute("data-id");
+
+    if (acompanhamento != 0) {
+      let obj = {
+        valor: precoAcompanhamento,
+        nome: nome,
+        id: id,
+        price: acompanhamento * precoAcompanhamento,
+        quantidade: acompanhamento,
+      };
+      plates.push(obj);
+      console.log(plates);
+    }
+
+    if (!isNaN(acompanhamento) && acompanhamento > 0) {
+      soma += acompanhamento * precoAcompanhamento;
     }
   }
 
-  let resumo = `<p><b>Cliente:</b> ${nome} <br> <b>Telefone:</b> ${telefone} <br> <b>Email:</b> ${email}</p>`;
-  resumo += `<p><b>Prato Principal:</b> ${pratoSelecionado.dataset.nome} - R$ ${pratoSelecionado.value},00</p>`;
-
-  if (acompanhamentos.length > 0) {
-    resumo += "<p><b>Acompanhamentos:</b><br>";
-    acompanhamentos.forEach((item) => {
-      resumo += `- ${item.dataset.nome} (R$ ${item.value},00)<br>`;
-      total += Number(item.value);
-    });
-    resumo += "</p>";
+  if (!selected) {
+    alert("Escolha um prato principal!");
+    return;
   }
-
-  resumo += `<p class="total">Preço Final: R$ ${total},00</p>`;
+  console.log("cheguei");
+  let total = pratoSelecionado.value;
+  let resumo = `
+          <h1>Caro ${nome}</h1>
+            <br/>
+          <p>Seguem os dados do seu pedido</p>
+            <br/>
+          <p>O seu pedido é</p>
+            <br/>
+        `;
+  for (let i = 0; i < plates.length; i++) {
+    resumo += `
+            <li>
+              Prato: ${plates[i].nome} - Preço unitario: R$${plates[i].valor} - Quantidade: ${plates[i].quantidade} - Total: ${plates[i].price}
+            </li>
+          `;
+  }
 
   resumoDiv.innerHTML = resumo;
+  console.log("partiu");
 });
